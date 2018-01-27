@@ -62,5 +62,8 @@
     "incremental-dom": "^0.5.1",
     "storejs": "^1.0.16",
     "workbox-sw": "2.1.2"
+  },
+  "prettier": {
+    "tabWidth": 4
   }
 }
