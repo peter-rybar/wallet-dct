@@ -107,7 +107,7 @@ export class TransferWidget extends Widget {
         this._validateRecipient((this.refs["recipient"] as HTMLInputElement).value);
         this._validateAmount((this.refs["amount"] as HTMLInputElement).value);
         this._validateMemo((this.refs["memo"] as HTMLInputElement).value);
-        if (this._errors.amount || this._errors.recipient) {
+        if (this._errors.amount || this._errors.recipient || this._errors.memo) {
             this.update();
         } else {
             this.sigData.emit(this._data);
