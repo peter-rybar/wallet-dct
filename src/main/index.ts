@@ -3,7 +3,10 @@ import { JsonMLs } from "./prest/jsonml/jsonml";
 import { Widget } from "./prest/jsonml/jsonml-widget";
 import { Signal } from "./prest/signal";
 import { swInit, showNotification } from "./sw-lib";
+// import * as store from "store";
 
+// store.set("settings", {});
+// const settings = store.get("settings");
 
 class HelloWidget extends Widget {
 
@@ -320,7 +323,7 @@ setTimeout(() => {
         //         icon: 'images/xmark.png'},
         // ]
     });
-}, 3000);
+}, 30000);
 
 (self as any).app = app;
 

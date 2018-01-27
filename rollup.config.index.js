@@ -27,6 +27,7 @@ export default {
         uglify({}/*, minify*/),
         copy({
             "node_modules/incremental-dom/dist/incremental-dom-min.js": "dist/lib/incremental-dom-min.js",
+            "node_modules/storejs/dist/store.min.js": "dist/lib/store.js",
             verbose: true
         })
     ],
