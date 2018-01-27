@@ -38,8 +38,8 @@ export default {
     targets: [
         {
             dest: `./dist/${bundle}.js`,
-            // format: 'iife',
-            format: 'umd',
+            format: 'iife',
+            // format: 'umd',
             moduleName: pkg.name,
             sourceMap: true
         // },

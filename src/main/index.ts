@@ -1,10 +1,13 @@
 
-import { JsonMLs } from "./prest/jsonml/jsonml";
 import { Widget } from "./prest/jsonml/jsonml-widget";
+import { JsonMLs } from "./prest/jsonml/jsonml";
 import { Signal } from "./prest/signal";
 import { swInit, showNotification } from "./sw-lib";
-// import * as store from "store";
+import { AppShell } from "./appshell";
+import { SidebarWidget } from "./sidebar";
+import { Router } from "./prest/router";
 
+// import * as store from "store";
 // store.set("settings", {});
 // const settings = store.get("settings");
 
@@ -272,6 +275,11 @@ class AppWidget extends Widget {
 
     onUmount() {
         console.log("onUmount", this.type, this.id);
+        // [
+        //     this.helloWidget,
+        //     this.timerWidget,
+        //     this.formWidget
+        // ].forEach(w => w.umount());
     }
 
     render(): JsonMLs {
@@ -296,15 +304,35 @@ class AppWidget extends Widget {
 
 swInit();
 
-const app = new AppWidget();
+const content = new AppWidget();
+content.setTitle("MyApp");
+content.helloWidget.setName("Peter");
+content.formWidget.setTitle("MyForm");
 
-app.setTitle("MyApp");
-app.helloWidget.setName("Peter");
-app.formWidget.setTitle("MyForm");
+const sidebar =  new SidebarWidget();
 
-app.mount(document.getElementById("app"));
+const app = new AppShell<SidebarWidget, Widget>()
+    .setTitle("Wallet DCT")
+    .setSidebar(sidebar)
+    .setContent(content)
+    .mount(document.getElementById("app"));
 
-// app.mount(document.getElementById(app.id)); // SSR - server side rendering
+Router.route("*", (path: string) => {
+    console.log("route:", path);
+    app.sidebarClose();
+    app.setTitle(`Wallet DCT ${path}`);
+});
+Router.start();
+Router.navigate("");
+
+// setTimeout(() => {
+//     app.setContent(new HelloWidget("petko"));
+// }, 5e3);
+
+// setTimeout(() => {
+//     app.setContent(content);
+//     content.update();
+// }, 10e3);
 
 setTimeout(() => {
     showNotification("Notif title", {
@@ -323,7 +351,7 @@ setTimeout(() => {
         //         icon: 'images/xmark.png'},
         // ]
     });
-}, 30000);
+}, 300e3);
 
 (self as any).app = app;
 

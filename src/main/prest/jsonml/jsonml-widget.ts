@@ -68,11 +68,11 @@ export abstract class Widget implements JsonMLObj, DomWidget {
             if (this.dom.hasAttribute("widget")) {
                 this.dom.removeAttribute("widget");
             }
-            if (this.dom.parentElement) {
-                this.dom.parentElement.removeChild(this.dom);
-            }
-            ((this as any).dom as any).widget = null;
-            (this as any).dom = null;
+            // if (this.dom.parentElement) {
+            //     this.dom.parentElement.removeChild(this.dom);
+            // }
+            (this.dom as any).widget = null;
+            (this.dom as any) = null;
         }
         return this;
     }
@@ -138,8 +138,13 @@ declare var IncrementalDOM: any;
 
 IncrementalDOM.notifications.nodesDeleted = (nodes: Node[]) => {
     nodes.forEach(node => {
-        if (node.nodeType === 1 && "widget" in node && (node as any).widget.onUmount) {
-            (node as any).widget.umount();
+        // console.log("idom.notif.nodeDeleted", node);
+        // const widgets = (node as Element).querySelectorAll("[widget]");
+        // const widgets = document.querySelectorAll("[widget]");
+        // console.log(widgets);
+        if (node.nodeType === 1 && "widget" in node) {
+            const w = (node as any).widget as Widget;
+            w && w.umount();
         }
     });
 };
