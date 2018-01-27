@@ -55,7 +55,7 @@ export class AppShell<SidebarW extends Widget, ContentW extends Widget> extends 
     render(): JsonMLs {
         return [
             // header
-            ["div.w3-bar.w3-top.w3-large.w3-black",
+            ["div.w3-bar.w3-top.w3-large.w3-blue",
                 {
                     // _skip: true,
                     style: "z-index:4"
