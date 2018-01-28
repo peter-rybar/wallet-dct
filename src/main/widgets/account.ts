@@ -6,6 +6,7 @@ import { Signal } from "../prest/signal";
 import { user } from "../data/user";
 
 export class AccountWidget extends Widget {
+
     private _title: string = "Form";
 
     readonly sigData = new Signal<FormData>();
@@ -21,7 +22,7 @@ export class AccountWidget extends Widget {
     }
 
     private _drawLineChart = () => {
-        let data = new google.visualization.DataTable();
+        const data = new google.visualization.DataTable();
         data.addColumn("number", "X");
         data.addColumn("number", "Dogs");
 
@@ -40,7 +41,7 @@ export class AccountWidget extends Widget {
           [66, 70], [67, 72], [68, 75], [69, 80]
         ]);
 
-        let options = {
+        const options = {
           hAxis: {
             title: "This month"
           },
@@ -49,14 +50,14 @@ export class AccountWidget extends Widget {
           }
         };
 
-        let chart = new google.visualization.LineChart(document.getElementById("linechart"));
+        const chart = new google.visualization.LineChart(document.getElementById("linechart"));
 
         chart.draw(data, options);
     }
 
     private _drawPieChart = () => {
       // Define the chart to be drawn.
-      let data = new google.visualization.DataTable();
+      const data = new google.visualization.DataTable();
       data.addColumn("string", "Element");
       data.addColumn("number", "Percentage");
       data.addRows([
@@ -65,7 +66,7 @@ export class AccountWidget extends Widget {
       ]);
 
       // Instantiate and draw the chart.
-      let chart = new google.visualization.PieChart(document.getElementById("piechart"));
+      const chart = new google.visualization.PieChart(document.getElementById("piechart"));
       chart.draw(data, null);
     }
 
@@ -91,10 +92,10 @@ export class AccountWidget extends Widget {
     render(): JsonMLs {
         return [
             ["h2", this._title],
-            [
-                "div.w3-card-12",
+            ["div.w3-card-12",
                 ["header.w3-container w3-light-grey",
-                ["h3", "Account: " + user.alias]],
+                    ["h3", "Account: ", user.alias]
+                ],
                 ["div.w3-container.w3-light-grey",
                     ["p", "Balance: 4 DCT"],
                     ["br"]
@@ -108,4 +109,5 @@ export class AccountWidget extends Widget {
             ["br"]
         ];
     }
+
 }

@@ -34,19 +34,21 @@ export class PaymentsWidget extends Widget {
     render(): JsonMLs {
         return [
             ["h2", this._title],
-            ...this._transactions.map(transaction => {
-                return ["ul.w3-ul",
-                    ["li.w3-bar",
-                        ["span.w3-bar-item.w3-button.w3-xlarge.w3-right", "&times;"],
-                        ["div.w3-bar-item w3-circle", new Date()],
-                        ["div.w3-bar-item",
-                            ["span.w3-large", "Mike "],
-                            ["br"],
-                            ["span", "Web Designer"]
+            ...this._transactions.map(t => {
+                return (
+                    ["ul.w3-ul",
+                        ["li.w3-bar",
+                            ["span.w3-bar-item.w3-button.w3-xlarge.w3-right", "&times;"],
+                            ["div.w3-bar-item w3-circle", new Date()],
+                            ["div.w3-bar-item",
+                                ["span.w3-large", "Mike"],
+                                ["br"],
+                                ["span", "Web Designer"]
+                            ]
                         ]
-                    ]
-                ];
+                    ]);
             })
         ];
     }
+
 }
