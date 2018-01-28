@@ -1,6 +1,20 @@
 {
   "name": "wallet-dct",
   "version": "0.1.0",
+  "description": "Wallet for DCT blockchain network",
+  "keywords": [
+    "wallet",
+    "DCT",
+    "crypto",
+    "PWA"
+  ],
+  "author": {
+    "name": "Peter Rybar",
+    "email": "pr.rybar@gmail.com",
+    "url": "http://prest-tech.appspot.com/peter-rybar"
+  },
+  "private": false,
+  "license": "GPLv3",
   "scripts": {
     "tslint": "tslint --project tsconfig.json",
     "build": "tsc",
@@ -28,6 +42,18 @@
     "gh-pages:undeploy": "git push origin --delete gh-pages; git branch -D gh-pages",
     "deploy": "npm run gh-pages:undeploy; git checkout -b gh-pages && run-s dist gh-pages:dist && git add gh-pages && git commit -m gh-pages && npm run gh-pages:deploy && git checkout master"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/peter-rybar/wallet-dct.git"
+  },
+  "pre-commit": [
+    "build",
+    "dist"
+  ],
+  "pre-push": [
+    "build",
+    "dist"
+  ],
   "devDependencies": {
     "@types/assertion-error": "^1.0.30",
     "@types/chai": "^3.4.34",
@@ -46,6 +72,8 @@
     "mocha": "^3.1.2",
     "npm-run-all": "^4.1.2",
     "onchange": "^3.2.1",
+    "pre-commit": "^1.2.2",
+    "pre-push": "^0.1.1",
     "requirejs": "^2.3.2",
     "rimraf": "^2.6.2",
     "rollup": "^0.36.3",

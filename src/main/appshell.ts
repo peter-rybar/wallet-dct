@@ -25,9 +25,7 @@ export class AppShell<SidebarW extends Widget, ContentW extends Widget> extends 
 
     setSidebar(sidebar: SidebarW): this {
         this._sidebar = sidebar;
-        if (this.dom) {
-            this._sidebar.mount(this.refs["sidebar"]);
-        }
+        sidebar && this.refs["sidebar"] && sidebar.mount(this.refs["sidebar"]);
         return this;
     }
 
@@ -36,11 +34,8 @@ export class AppShell<SidebarW extends Widget, ContentW extends Widget> extends 
     }
 
     setContent(content: ContentW): this {
-        this._content && this._content.umount();
-        if (this.dom) {
-            content && content.mount(this.refs["content"]);
-        }
         this._content = content;
+        content && this.refs["content"] && content.mount(this.refs["content"]);
         return this;
     }
 
@@ -57,7 +52,6 @@ export class AppShell<SidebarW extends Widget, ContentW extends Widget> extends 
             // header
             ["div.w3-bar.w3-top.w3-large.w3-blue",
                 {
-                    // _skip: true,
                     style: "z-index:4"
                 },
                 ["button.w3-bar-item.w3-button.w3-hide-large.w3-hover-none.w3-hover-text-light-grey",
@@ -83,15 +77,13 @@ export class AppShell<SidebarW extends Widget, ContentW extends Widget> extends 
             // sidebar
             ["div.w3-sidebar.w3-collapse.w3-white.w3-animate-left~sidebar",
                 {
-                    // _skip: true,
+                    _widget: this._sidebar,
                     style: "z-index:3;width:300px;"
-                },
-                this._sidebar
+                }
             ],
             // overlay
             ["div.w3-overlay.w3-hide-large.w3-animate-opacity~overlay",
                 {
-                    // _skip: true,
                     style: "cursor:pointer",
                     title: "close side menu",
                     click: this.onClickOwerlay
@@ -100,11 +92,12 @@ export class AppShell<SidebarW extends Widget, ContentW extends Widget> extends 
             // main
             ["div.w3-main",
                 {
-                    // _skip: true,
                     style: "margin-left:300px;margin-top:43px;"
                 },
                 ["div.w3-container~content",
-                    this._content
+                    {
+                        _widget: this._content
+                    }
                 ]
             ]
         ];

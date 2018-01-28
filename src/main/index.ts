@@ -275,11 +275,6 @@ class AppWidget extends Widget {
 
     onUmount() {
         console.log("onUmount", this.type, this.id);
-        // [
-        //     this.helloWidget,
-        //     this.timerWidget,
-        //     this.formWidget
-        // ].forEach(w => w.umount());
     }
 
     render(): JsonMLs {
@@ -317,22 +312,25 @@ const app = new AppShell<SidebarWidget, Widget>()
     .setContent(content)
     .mount(document.getElementById("app"));
 
+Router.route("", () => {
+    console.log("route ''");
+    app.sidebarClose();
+    app.setTitle("Wallet DCT");
+    app.setContent(content);
+});
+Router.route("views", () => {
+    console.log("route 'views'");
+    app.sidebarClose();
+    app.setTitle("Wallet DCT Views");
+    app.setContent(new HelloWidget("Peťko"));
+});
 Router.route("*", (path: string) => {
-    console.log("route:", path);
+    console.log("route '*'", path);
     app.sidebarClose();
     app.setTitle(`Wallet DCT ${path}`);
 });
 Router.start();
 Router.navigate("");
-
-// setTimeout(() => {
-//     app.setContent(new HelloWidget("petko"));
-// }, 5e3);
-
-// setTimeout(() => {
-//     app.setContent(content);
-//     content.update();
-// }, 10e3);
 
 setTimeout(() => {
     showNotification("Notif title", {
