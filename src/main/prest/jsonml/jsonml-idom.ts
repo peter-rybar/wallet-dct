@@ -16,10 +16,11 @@ declare var IncrementalDOM: any;
 class JsonmlIDomHandler implements JsonMLHandler {
 
     open(tag: string, attrs: Attrs, children: number, ctx?: any): boolean {
-        const props: any = [];
+        const props: any[] = [];
         let id: string = attrs._id;
         let classes: string[] = attrs._classes ? attrs._classes : [];
         let ref: string = attrs._ref;
+        let widget: any = attrs._widget;
         for (const a in attrs) {
             if (attrs.hasOwnProperty(a)) {
                 switch (a) {
@@ -28,6 +29,7 @@ class JsonmlIDomHandler implements JsonMLHandler {
                     case "_ref":
                     case "_key":
                     case "_skip":
+                    case "_widget":
                         break;
                     case "id":
                         id = attrs[a];
@@ -74,8 +76,8 @@ class JsonmlIDomHandler implements JsonMLHandler {
         if (ctx && ref) {
             ctx.refs[ref] = IncrementalDOM.currentElement();
         }
-        if (attrs._widget && "mount" in attrs._widget) {
-            attrs._widget.mount(IncrementalDOM.currentElement());
+        if (widget && "mount" in widget && widget.mount.constructor === Function) {
+            widget.mount(IncrementalDOM.currentElement());
             IncrementalDOM.skip();
         }
         return attrs._skip ? true : false;
