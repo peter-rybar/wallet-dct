@@ -74,6 +74,10 @@ class JsonmlIDomHandler implements JsonMLHandler {
         if (ctx && ref) {
             ctx.refs[ref] = IncrementalDOM.currentElement();
         }
+        if (attrs._widget && "mount" in attrs._widget) {
+            attrs._widget.mount(IncrementalDOM.currentElement());
+            IncrementalDOM.skip();
+        }
         return attrs._skip ? true : false;
     }
 
