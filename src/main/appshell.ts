@@ -4,6 +4,7 @@ import { JsonMLs } from "./prest/jsonml/jsonml";
 export class AppShell<SidebarW extends Widget, ContentW extends Widget> extends Widget {
 
     private _title: string;
+    private _title1: string;
     private _sidebar: SidebarW;
     private _content: ContentW;
 
@@ -11,10 +12,26 @@ export class AppShell<SidebarW extends Widget, ContentW extends Widget> extends 
         super("AppShell");
     }
 
+    getTitle(): string {
+        return this._title;
+    }
+
     setTitle(title: string): this {
         this._title = title;
         if (this.dom) {
             this.refs["title"].textContent = title;
+        }
+        return this;
+    }
+
+    getTitle1(): string {
+        return this._title1;
+    }
+
+    setTitle1(title1: string): this {
+        this._title1 = title1;
+        if (this.dom) {
+            this.refs["title1"].textContent = title1 ? ` - ${title1}` : "";
         }
         return this;
     }
@@ -50,7 +67,7 @@ export class AppShell<SidebarW extends Widget, ContentW extends Widget> extends 
     render(): JsonMLs {
         return [
             // header
-            ["div.w3-bar.w3-top.w3-large.w3-black",
+            ["div.w3-bar.w3-top.w3-large.w3-blue",
                 {
                     style: "z-index:4"
                 },
@@ -61,7 +78,8 @@ export class AppShell<SidebarW extends Widget, ContentW extends Widget> extends 
                     ["i.fa.fa-bars"],
                 ],
                 ["span.w3-bar-item",
-                    ["strong~title", this._title]
+                    ["strong~title", this._title],
+                    ["span~title1", this._title1 ? ` - ${this._title1}` : ""],
                 ],
                 ["span.w3-bar-item.w3-right",
                     ["a",

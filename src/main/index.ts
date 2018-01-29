@@ -2,10 +2,11 @@
 import { Widget } from "./prest/jsonml/jsonml-widget";
 import { JsonMLs } from "./prest/jsonml/jsonml";
 import { Signal } from "./prest/signal";
-import { swInit, showNotification } from "./sw-lib";
+import { swInit } from "./sw-lib";
 import { AppShell } from "./appshell";
-import { SidebarWidget } from "./sidebar";
 import { Router } from "./prest/router";
+import { SidebarWidget } from "./sidebar";
+import { ContentWidget } from "./content";
 
 // import * as store from "store";
 // store.set("settings", {});
@@ -299,57 +300,71 @@ class AppWidget extends Widget {
 
 swInit();
 
-const content = new AppWidget();
-content.setTitle("MyApp");
-content.helloWidget.setName("Peter");
-content.formWidget.setTitle("MyForm");
-
 const sidebar =  new SidebarWidget();
 
 const app = new AppShell<SidebarWidget, Widget>()
     .setTitle("Wallet DCT")
     .setSidebar(sidebar)
-    .setContent(content)
+    // .setContent(content)
     .mount(document.getElementById("app"));
 
+const contents: { [kry: string]: ContentWidget } = {
+    views: new ContentWidget("Views"),
+    traffic: new ContentWidget("Traffic"),
+    geo: new ContentWidget("Geo")
+};
+
+const c = new AppWidget();
+c.setTitle("MyApp");
+c.helloWidget.setName("Peter");
+c.formWidget.setTitle("MyForm");
+
 Router.route("", () => {
-    console.log("route ''");
+    console.log("#");
     app.sidebarClose();
-    app.setTitle("Wallet DCT");
-    app.setContent(content);
+    app.setTitle1("");
+    app.setContent(c.setTitle("MyApp"));
 });
 Router.route("views", () => {
-    console.log("route 'views'");
+    console.log("#views");
     app.sidebarClose();
-    app.setTitle("Wallet DCT Views");
+    app.setTitle1("Views");
     app.setContent(new HelloWidget("Peťko"));
 });
 Router.route("*", (path: string) => {
-    console.log("route '*'", path);
+    console.log("#*", path);
     app.sidebarClose();
-    app.setTitle(`Wallet DCT ${path}`);
+    // sidebar.menuActive(path);
+    const content = contents[path];
+    if (content) {
+        app.setContent(content);
+        app.setTitle1(content.title);
+    } else {
+        app.setTitle1(path);
+        app.setContent(c.setTitle(path));
+    }
 });
 Router.start();
-Router.navigate("");
+// Router.navigate("overview");
 
-setTimeout(() => {
-    showNotification("Notif title", {
-        body: "Notif body",
-        icon: "assets/icons/ic-face.png",
-        tag: "notif-tag"
-        // vibrate: [200, 100, 200, 100, 200, 100, 200],
-        // data: {
-        //     dateOfArrival: Date.now(),
-        //     primaryKey: 1
-        // },
-        // actions: [
-        //     {action: 'explore', title: 'Explore this new world',
-        //         icon: 'images/checkmark.png'},
-        //     {action: 'close', title: 'Close notification',
-        //         icon: 'images/xmark.png'},
-        // ]
-    });
-}, 300e3);
+// setTimeout(() => {
+//     showNotification("Notif title", {
+//         body: "Notif body",
+//         icon: "assets/icons/ic-face.png",
+//         tag: "notif-tag"
+//         // vibrate: [200, 100, 200, 100, 200, 100, 200],
+//         // data: {
+//         //     dateOfArrival: Date.now(),
+//         //     primaryKey: 1
+//         // },
+//         // actions: [
+//         //     {action: 'explore', title: 'Explore this new world',
+//         //         icon: 'images/checkmark.png'},
+//         //     {action: 'close', title: 'Close notification',
+//         //         icon: 'images/xmark.png'},
+//         // ]
+//     });
+// }, 300e3);
 
 (self as any).app = app;
 
