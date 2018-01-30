@@ -122,17 +122,13 @@ export class AppShell<SidebarW extends Widget, ContentW extends Widget> extends 
     }
 
     sidebarOpen(): void {
-        const sidebar = this.refs["sidebar"];
-        const overlay = this.refs["overlay"];
-        sidebar.style.display = "block";
-        overlay.style.display = "block";
+        this.refs["sidebar"].style.display = "block";
+        this.refs["overlay"].style.display = "block";
     }
 
     sidebarClose(): void {
-        const sidebar = this.refs["sidebar"];
-        const overlay = this.refs["overlay"];
-        sidebar.style.display = "none";
-        overlay.style.display = "none";
+        this.refs["sidebar"].style.display = "none";
+        this.refs["overlay"].style.display = "none";
     }
 
     sidebarToggle(): void {

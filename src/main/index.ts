@@ -1,16 +1,16 @@
 
+import { swInit } from "./sw-lib";
 import { Widget } from "./prest/jsonml/jsonml-widget";
 import { JsonMLs } from "./prest/jsonml/jsonml";
-import { Signal } from "./prest/signal";
-import { swInit } from "./sw-lib";
-import { AppShell } from "./appshell";
 import { Router } from "./prest/router";
+import { AppShell } from "./appshell";
 import { SidebarWidget } from "./sidebar";
 import { ContentWidget } from "./content";
 
 // import * as store from "store";
 // store.set("settings", {});
 // const settings = store.get("settings");
+
 
 class HelloWidget extends Widget {
 
@@ -55,257 +55,14 @@ class HelloWidget extends Widget {
 
 }
 
-
-class TimerWidget extends Widget {
-
-    private _interval: number;
-
-    constructor() {
-        super("TimerWidget");
-    }
-
-    toggle(on?: boolean): void {
-        switch (on) {
-            case true:
-                if (!this._interval) {
-                    this._interval = setInterval(() => this.update(), 1000);
-                }
-                break;
-            case false:
-                if (this._interval) {
-                    clearInterval(this._interval);
-                    this._interval = undefined;
-                }
-                break;
-            default:
-                this.toggle(!this._interval);
-        }
-        this.update();
-    }
-
-    onMount() {
-        console.log("onMount", this.type, this.id);
-        this.toggle(true);
-    }
-
-    onUmount() {
-        console.log("onUmount", this.type, this.id);
-        this.toggle(false);
-    }
-
-    render(): JsonMLs {
-        return [
-            ["p", { style: this._interval ? "" : "color: lightgray;" },
-                "Time: ", new Date().toLocaleTimeString(), " ",
-                ["button.w3-btn.w3-blue", { click: (e: Event) => this.toggle() },
-                    this._interval ? "Stop" : "Start"
-                ]
-            ]
-        ];
-    }
-
-}
-
-
-interface FormData {
-    name: string;
-    age: number;
-}
-
-interface FormErrors {
-    name: string;
-    age: string;
-}
-
-class FormWidget extends Widget {
-
-    private _title: string = "Form";
-    private _data: FormData = { name: undefined, age: undefined };
-    private _errors: FormErrors = { name: "", age: "" };
-
-    readonly sigData = new Signal<FormData>();
-
-    constructor() {
-        super("FormWidget");
-    }
-
-    getTitle(): string {
-        return this._title;
-    }
-
-    setTitle(title: string): this {
-        this._title = title;
-        this.update();
-        return this;
-    }
-
-    getData(): FormData {
-        return this._data;
-    }
-
-    setData(data: FormData): this {
-        this._data = data;
-        this.update();
-        return this;
-    }
-
-    onMount() {
-        console.log("onMount", this.type, this.id);
-    }
-
-    onUmount() {
-        console.log("onUmount", this.type, this.id);
-    }
-
-    render(): JsonMLs {
-        return [
-            ["h2", this._title],
-            ["form.w3-container", { submit: this._onFormSubmit },
-                ["p",
-                    ["label", "Name ",
-                        ["input.w3-input~name",
-                            {
-                                type: "text", size: 10, maxlength: 10,
-                                input: this._onNameInput
-                            }
-                        ]
-                    ], " ",
-                    ["em.error", this._errors.name]
-                ],
-                ["p",
-                    ["label", "Age ",
-                        ["input.w3-input~age",
-                            {
-                                type: "number", min: "1", max: "120",
-                                input: this._onAgeInput
-                            }
-                        ]
-                    ], " ",
-                    ["em.error", this._errors.age]
-                ],
-                ["p",
-                    ["button.w3-btn.w3-blue~submit", "Submit"]
-                ]
-            ],
-            ["pre~data"]
-        ];
-    }
-
-    private _onFormSubmit = (e: Event) => {
-        e.preventDefault();
-        console.log("submit", this._data);
-        this._validateName((this.refs["name"] as HTMLInputElement).value);
-        this._validateAge((this.refs["age"] as HTMLInputElement).value);
-        if (this._errors.name || this._errors.age) {
-            this.update();
-        } else {
-            this.sigData.emit(this._data);
-            this.refs["data"].innerText = JSON.stringify(this._data, null, 4);
-        }
-    }
-
-    private _onNameInput = (e: Event) => {
-        const i = e.target as HTMLInputElement;
-        // const i = this.refs["name"] as  HTMLInputElement;
-        console.log("name", i.value);
-        this._validateName(i.value);
-        this.update();
-    }
-
-    private _onAgeInput = (e: Event) => {
-        const i = e.target as HTMLInputElement;
-        // const i = this.refs["age"] as  HTMLInputElement;
-        console.log("age", i.value);
-        this._validateAge(i.value);
-        this.update();
-    }
-
-    private _validateName(name: string) {
-        if (name) {
-            this._data.name = name;
-            this._errors.name = "";
-        } else {
-            this._data.name = undefined;
-            this._errors.name = "Name required";
-        }
-    }
-
-    private _validateAge(age: string) {
-        if (age) {
-            if (isNaN(+age)) {
-                this._data.age = undefined;
-                this._errors.age = "Invalid age number";
-            } else {
-                this._data.age = +age;
-                this._errors.age = "";
-            }
-        } else {
-            this._data.age = undefined;
-            this._errors.age = "Age required";
-        }
-    }
-
-}
-
-
-class AppWidget extends Widget {
-
-    private _title: string = "App";
-
-    readonly helloWidget: HelloWidget;
-    readonly timerWidget: TimerWidget;
-    readonly formWidget: FormWidget;
-
-    constructor() {
-        super("AppWidget");
-        this.helloWidget = new HelloWidget("peter");
-        this.timerWidget = new TimerWidget();
-        this.formWidget = new FormWidget();
-        this.formWidget.sigData.connect(data => console.log("sig data", data));
-    }
-
-    setTitle(title: string): this {
-        this._title = title;
-        this.update();
-        return this;
-    }
-
-    onMount() {
-        console.log("onMount", this.type, this.id);
-    }
-
-    onUmount() {
-        console.log("onUmount", this.type, this.id);
-    }
-
-    render(): JsonMLs {
-        return [
-            ["h1", this._title],
-            ["div.w3-panel.w3-card-4",
-                this.helloWidget
-            ],
-            ["hr"],
-            ["div.w3-panel.w3-card-4",
-                this.timerWidget
-            ],
-            ["hr"],
-            ["div.w3-panel.w3-card-4",
-                this.formWidget
-            ]
-        ];
-    }
-
-}
-
-
 swInit();
 
-const sidebar =  new SidebarWidget();
+const sidebar =  new SidebarWidget()
+    .setName("Peter");
 
 const app = new AppShell<SidebarWidget, Widget>()
     .setTitle("Wallet DCT")
     .setSidebar(sidebar)
-    // .setContent(content)
     .mount(document.getElementById("app"));
 
 const contents: { [kry: string]: ContentWidget } = {
@@ -314,34 +71,17 @@ const contents: { [kry: string]: ContentWidget } = {
     geo: new ContentWidget("Geo")
 };
 
-const c = new AppWidget();
-c.setTitle("MyApp");
-c.helloWidget.setName("Peter");
-c.formWidget.setTitle("MyForm");
-
-Router.route("", () => {
-    console.log("#");
-    app.sidebarClose();
-    app.setTitle1("");
-    app.setContent(c.setTitle("MyApp"));
-});
-Router.route("views", () => {
-    console.log("#views");
-    app.sidebarClose();
-    app.setTitle1("Views");
-    app.setContent(new HelloWidget("Peťko"));
-});
 Router.route("*", (path: string) => {
     console.log("#*", path);
     app.sidebarClose();
-    // sidebar.menuActive(path);
+    sidebar.setHash(path);
     const content = contents[path];
     if (content) {
-        app.setContent(content);
         app.setTitle1(content.title);
+        app.setContent(content);
     } else {
         app.setTitle1(path);
-        app.setContent(c.setTitle(path));
+        app.setContent(new HelloWidget(path));
     }
 });
 Router.start();

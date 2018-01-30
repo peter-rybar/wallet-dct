@@ -1,11 +1,38 @@
 import { Widget } from "../main/prest/jsonml/jsonml-widget";
 import { JsonMLs } from "../main/prest/jsonml/jsonml";
 
+interface Menu {
+    hash: string;
+    label: string;
+    icon: string;
+}
 
 export class SidebarWidget extends Widget {
 
+    private _name = "";
+    private _hash = "";
+    private _menu: Menu[] = [
+        { hash: "overview", label: "Overview", icon: "i.fa.fa-users.fa-fw" },
+        { hash: "views", label: "Views", icon: "i.fa.fa-eye.fa-fw" },
+        { hash: "news", label: "News", icon: "i.fa.fa-bell.fa-fw" },
+        { hash: "settings", label: "Settings", icon: "i.fa.fa-cog.fa-fw" },
+    ];
+    private _nbsp = "\u00a0 ";
+
     constructor() {
-        super("HelloWidget");
+        super("SidebarWidget");
+    }
+
+    setName(name: string): this {
+        this._name = name;
+        this.update();
+        return this;
+    }
+
+    setHash(hash: string): this {
+        this._hash = hash;
+        this.update();
+        return this;
     }
 
     onMount() {
@@ -17,7 +44,6 @@ export class SidebarWidget extends Widget {
     }
 
     render(): JsonMLs {
-        const nbsp = "\u00a0 ";
         return [
             ["nav",
                 ["br"],
@@ -31,11 +57,21 @@ export class SidebarWidget extends Widget {
                         ]
                     ],
                     ["div.w3-col.s8.w3-bar",
-                        ["span", "Welcome, ", ["strong", "Mike"]],
+                        ["span",
+                            ["a", { href: "#", style: "text-decoration: none;" }, "Welcome"],
+                            this._name ? ", " : " ",
+                            ["strong~name", this._name]
+                        ],
                         ["br"],
-                        ["a.w3-bar-item.w3-button", { "href": "#" }, ["i.fa.fa-envelope"]],
-                        ["a.w3-bar-item.w3-button", { "href": "#" }, ["i.fa.fa-user"]],
-                        ["a.w3-bar-item.w3-button", { "href": "#" }, ["i.fa.fa-cog"]],
+                        ["a.w3-bar-item.w3-button", { href: "#messages", title: "Messages" },
+                            ["i.fa.fa-envelope"]
+                        ],
+                        ["a.w3-bar-item.w3-button", { href: "#profile", title: "Profile" },
+                            ["i.fa.fa-user"]
+                        ],
+                        ["a.w3-bar-item.w3-button", { href: "#settings", title: "Settings" },
+                            ["i.fa.fa-cog"]
+                        ],
                     ],
                 ],
                 ["hr"],
@@ -43,33 +79,16 @@ export class SidebarWidget extends Widget {
                     ["h5", "Menu"],
                 ],
                 ["div.w3-bar-block",
-                    ["a.w3-bar-item.w3-button.w3-padding", { href: "#" },
-                        ["i.fa.fa-users.fa-fw"], nbsp, "Overview"
-                    ],
-                    ["a.w3-bar-item.w3-button.w3-padding", { href: "#views", classes: ["w3-blue"] },
-                        ["i.fa.fa-eye.fa-fw"], nbsp, "Views"
-                    ],
-                    ["a.w3-bar-item.w3-button.w3-padding", { href: "#traffic" },
-                        ["i.fa.fa-users.fa-fw"], nbsp, "Traffic"
-                    ],
-                    ["a.w3-bar-item.w3-button.w3-padding", { href: "#geo" },
-                        ["i.fa.fa-bullseye.fa-fw"], nbsp, "Geo"
-                    ],
-                    ["a.w3-bar-item.w3-button.w3-padding", { href: "#orders" },
-                        ["i.fa.fa-diamond.fa-fw"], nbsp, "Orders"
-                    ],
-                    ["a.w3-bar-item.w3-button.w3-padding", { href: "#news" },
-                        ["i.fa.fa-bell.fa-fw"], nbsp, "News"
-                    ],
-                    ["a.w3-bar-item.w3-button.w3-padding", { href: "#general" },
-                        ["i.fa.fa-bank.fa-fw"], nbsp, "General"
-                    ],
-                    ["a.w3-bar-item.w3-button.w3-padding", { href: "#history" },
-                        ["i.fa.fa-history.fa-fw"], nbsp, "History"
-                    ],
-                    ["a.w3-bar-item.w3-button.w3-padding", { href: "#settings"},
-                        ["i.fa.fa-cog.fa-fw"], nbsp, "Settings"
-                    ],
+                    ...this._menu.map(m => {
+                        return (
+                            ["a.w3-bar-item.w3-button.w3-padding",
+                                {
+                                    href: `#${m.hash}`,
+                                    classes: m.hash === this._hash ? ["w3-blue"] : []
+                                },
+                                [m.icon], this._nbsp, m.label
+                            ]);
+                    }),
                     ["br"],
                     ["br"]
                 ]
