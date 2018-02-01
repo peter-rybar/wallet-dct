@@ -117,8 +117,19 @@ export class AppShell<SidebarW extends Widget, ContentW extends Widget> extends 
                         _widget: this._content
                     }
                 ]
-            ]
+            ],
+            // snackbar
+            ["div#snackbar~snackbar", "test"]
         ];
+    }
+
+    snackbar(msg: string): void {
+        const sb = this.refs["snackbar"];
+        sb.textContent = msg;
+        sb.classList.add("show");
+        setTimeout(() => {
+            sb.classList.remove("show");
+        }, 3e3);
     }
 
     sidebarOpen(): void {

@@ -87,6 +87,10 @@ Router.route("*", (path: string) => {
 Router.start();
 // Router.navigate("overview");
 
+setTimeout(() => {
+    app.snackbar("Welcome");
+}, 2e3);
+
 // setTimeout(() => {
 //     showNotification("Notif title", {
 //         body: "Notif body",
