@@ -21,9 +21,9 @@
         "outDir": "build"
     },
     "include": [
-        "src/main/**/*",
-        "src/demo/**/*",
-        "src/test/**/*"
+        "src/main/**/*.ts",
+        "src/demo/**/*.ts",
+        "src/test/**/*.ts"
     ],
     "exclude": [
         "node_modules",
