@@ -1,28 +1,26 @@
 
 import { Widget } from "../prest/jsonml/jsonml-widget";
 import { JsonMLs } from "../prest/jsonml/jsonml";
-import { Signal } from "../prest/signal";
 
-interface FormData {
+interface TransferData {
     amount: number;
     recipient: string;
     memo: string;
 }
 
-interface FormErrors {
+interface TransferErrors {
     amount: string;
     recipient: string;
     memo: string;
 }
 
-
 export class TransferWidget extends Widget {
 
-    private _title: string = "Form";
-    private _data: FormData = { recipient: undefined, amount: undefined, memo: undefined };
-    private _errors: FormErrors = { amount: "", recipient: "", memo: "" };
+    private _title: string = "Transfer";
+    private _data: TransferData = { recipient: undefined, amount: undefined, memo: undefined };
+    private _errors: TransferErrors = { amount: "", recipient: "", memo: "" };
 
-    readonly sigData = new Signal<FormData>();
+    private _onSubmit: (data: TransferData) => void;
 
     constructor() {
         super("TransferWidget");
@@ -38,11 +36,11 @@ export class TransferWidget extends Widget {
         return this;
     }
 
-    getData(): FormData {
+    getData(): TransferData {
         return this._data;
     }
 
-    setData(data: FormData): this {
+    setData(data: TransferData): this {
         this._data = data;
         this.update();
         return this;
@@ -65,39 +63,38 @@ export class TransferWidget extends Widget {
                         ["input.w3-input~recipient",
                             {
                                 type: "text",
-                                input: this._onRecipientInput
+                                input: this._onInputRecipient
                             }
                         ]
                     ], " ",
-                    ["em.error", this._errors.recipient]
+                    ["span.w3-text-red", this._errors.recipient]
                 ],
                 ["p",
                     ["label", "Amount ",
                         ["input.w3-input~amount",
                             {
                                 type: "number", min: "0", max: "1000000",
-                                input: this._onAmountInput
+                                input: this._onInputAmount
                             }
                         ]
                     ], " ",
-                    ["em.error", this._errors.amount]
+                    ["span.w3-text-red", this._errors.amount]
                 ],
                 ["p",
                     ["label", "Memo ",
                         ["input.w3-input~memo",
                             {
                                 type: "text",
-                                input: this._onMemoInput
+                                input: this._onInputMemo
                             }
                         ]
                     ], " ",
-                    ["em.error", this._errors.memo]
+                    ["span.w3-text-red", this._errors.memo]
                 ],
                 ["p",
                     ["button.w3-btn.w3-blue~submit", "Submit"]
                 ]
-            ],
-            ["pre~data"]
+            ]
         ];
     }
 
@@ -110,12 +107,11 @@ export class TransferWidget extends Widget {
         if (this._errors.amount || this._errors.recipient || this._errors.memo) {
             this.update();
         } else {
-            this.sigData.emit(this._data);
-            this.refs["data"].innerText = JSON.stringify(this._data, null, 4);
+            this._onSubmit && this._onSubmit(this._data);
         }
     }
 
-    private _onAmountInput = (e: Event) => {
+    private _onInputAmount = (e: Event) => {
         const i = e.target as HTMLInputElement;
         // const i = this.refs["name"] as  HTMLInputElement;
         console.log("Amount", i.value);
@@ -123,14 +119,14 @@ export class TransferWidget extends Widget {
         this.update();
     }
 
-    private _onMemoInput = (e: Event) => {
+    private _onInputMemo = (e: Event) => {
         const i = e.target as HTMLInputElement;
         console.log("Memo", i.value);
         this._validateMemo(i.value);
         this.update();
     }
 
-    private _onRecipientInput = (e: Event) => {
+    private _onInputRecipient = (e: Event) => {
         const i = e.target as HTMLInputElement;
         console.log("Recipient", i.value);
         this._validateRecipient(i.value);

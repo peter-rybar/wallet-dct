@@ -4,14 +4,14 @@
 const expect = chai.expect;
 
 
-describe("test", function () {
+describe("test", () => {
 
-    it("check true", function () {
+    it("check true", () => {
         const expected = true;
         expect(expected).to.be.equal(true);
     });
 
-    it("check false", function () {
+    it("check false", () => {
         const expected = false;
         expect(expected).to.be.equal(false);
     });
