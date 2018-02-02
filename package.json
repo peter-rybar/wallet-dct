@@ -19,8 +19,10 @@
     "tslint": "tslint --project tsconfig.json",
     "build": "tsc",
     "build:watch": "npm run build -- -w",
-    "test": "node ./node_modules/karma-cli/bin/karma start ./karma.conf.js --single-run",
-    "test:watch": "node ./node_modules/karma-cli/bin/karma start ./karma.conf.js",
+    "test:karma": "node ./node_modules/karma-cli/bin/karma start ./karma.conf.js --single-run",
+    "test:karma:watch": "node ./node_modules/karma-cli/bin/karma start ./karma.conf.js",
+    "test": "run-s build test:karma",
+    "test:watch": "run-p -r build:watch test:karma:watch",
     "rollup": "rollup -c",
     "rollup-multiple": "rollup-multiple -c",
     "bundle": "npm run rollup-multiple",
@@ -91,7 +93,6 @@
   },
   "dependencies": {
     "@types/google.visualization": "0.0.41",
-    "dcorejs": "0.0.1-security",
     "incremental-dom": "^0.5.1",
     "storejs": "^1.0.16",
     "workbox-sw": "2.1.2"
