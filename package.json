@@ -35,7 +35,7 @@
     "clean": "rimraf build/; rimraf dist/",
     "clean:all": "npm run clean; rimraf node_modules",
     "predist": "run-s clean tslint build test",
-    "dist": "run-s bundle swim static",
+    "dist": "run-s static bundle swim",
     "dist:watch": "run-p -r static:watch bundle:watch",
     "server": "http-server dist/",
     "start": "run-p -r static:watch bundle:watch server",

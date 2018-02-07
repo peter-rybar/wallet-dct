@@ -7,9 +7,14 @@ interface Menu {
     icon: string;
 }
 
+interface User {
+    name: string;
+    avatar: string;
+}
+
 export class SidebarWidget extends Widget {
 
-    private _name = "";
+    private _user: User;
     private _hash = "";
     private _menu: Menu[] = [
         { hash: "overview", label: "Overview", icon: "i.fa.fa-users.fa-fw" },
@@ -23,8 +28,8 @@ export class SidebarWidget extends Widget {
         super("SidebarWidget");
     }
 
-    setName(name: string): this {
-        this._name = name;
+    setUser(user: User): this {
+        this._user = user;
         this.update();
         return this;
     }
@@ -51,7 +56,7 @@ export class SidebarWidget extends Widget {
                     ["div.w3-col.s4",
                         ["img.w3-circle.w3-margin-right",
                             {
-                                src: "https://www.w3schools.com/w3images/avatar2.png",
+                                src:  this._user.avatar || "https://www.w3schools.com/w3images/avatar2.png",
                                 style: "width:46px"
                             }
                         ]
@@ -59,8 +64,8 @@ export class SidebarWidget extends Widget {
                     ["div.w3-col.s8.w3-bar",
                         ["span",
                             ["a", { href: "#", style: "text-decoration: none;" }, "Welcome"],
-                            this._name ? ", " : " ",
-                            ["strong~name", this._name]
+                            this._user.name ? ", " : " ",
+                            ["strong~name", this._user.name]
                         ],
                         ["br"],
                         ["a.w3-bar-item.w3-button", { href: "#messages", title: "Messages" },

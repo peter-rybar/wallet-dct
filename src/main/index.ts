@@ -58,7 +58,7 @@ class HelloWidget extends Widget {
 swInit();
 
 const sidebar =  new SidebarWidget()
-    .setName("Peter");
+    .setUser({ name: "Peter", avatar: "" });
 
 const app = new AppShell<SidebarWidget, Widget>()
     .setTitle("Wallet DCT")
