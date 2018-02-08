@@ -51,12 +51,12 @@
   "pre-commit": [
     "dist"
   ],
-  "pre-push": [
-  ],
+  "pre-push": [],
   "devDependencies": {
     "@types/assertion-error": "^1.0.30",
     "@types/chai": "^3.4.34",
     "@types/mocha": "^2.2.33",
+    "@types/numeral": "0.0.22",
     "@types/storejs": "^2.0.1",
     "chai": "^3.5.0",
     "cpx": "^1.5.0",
@@ -92,6 +92,8 @@
     "@types/google.visualization": "0.0.41",
     "dcorejs": "^2.2.1",
     "incremental-dom": "^0.5.1",
+    "moment": "^2.20.1",
+    "numeral": "^2.0.6",
     "storejs": "^1.0.16",
     "workbox-sw": "2.1.2"
   },
