@@ -1,4 +1,3 @@
-
 import { swInit } from "./sw-lib";
 import { Widget } from "./prest/jsonml/jsonml-widget";
 import { JsonMLs } from "./prest/jsonml/jsonml";
@@ -7,9 +6,13 @@ import { AppShell } from "./appshell";
 import { SidebarWidget } from "./sidebar";
 import { ContentWidget } from "./content";
 
-// import * as store from "store";
+import * as store from "store";
 // store.set("settings", {});
-// const settings = store.get("settings");
+const settings = store.get("settings");
+console.log("settings", settings);
+
+import { test } from "./logic/dcore";
+test();
 
 
 class HelloWidget extends Widget {
@@ -102,10 +105,10 @@ setTimeout(() => {
 //         //     primaryKey: 1
 //         // },
 //         // actions: [
-//         //     {action: 'explore', title: 'Explore this new world',
-//         //         icon: 'images/checkmark.png'},
-//         //     {action: 'close', title: 'Close notification',
-//         //         icon: 'images/xmark.png'},
+//         //     {action: "explore", title: "Explore this new world",
+//         //         icon: "images/checkmark.png"},
+//         //     {action: "close", title: "Close notification",
+//         //         icon: "images/xmark.png"},
 //         // ]
 //     });
 // }, 300e3);

@@ -29,6 +29,8 @@ export default {
             "node_modules/incremental-dom/dist/incremental-dom-min.js": "dist/lib/incremental-dom-min.js",
             "node_modules/incremental-dom/dist/incremental-dom-min.js.map": "dist/lib/incremental-dom-min.js.map",
             "node_modules/storejs/dist/store.min.js": "dist/lib/store.js",
+            "node_modules/dcorejs-lib/dist/bundle.js": "dist/lib/dcorejs-lib.js",
+            "node_modules/dcorejs/dist/dcorejs.umd.js": "dist/lib/dcorejs.js",
             verbose: true
         })
     ],
