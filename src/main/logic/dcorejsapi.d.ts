@@ -17,6 +17,6 @@ interface DcoreJsAPI {
 
 declare const dcorejs: DcoreJsAPI;
 
-declare module "dcorejs" {
-    export = dcorejs;
-}
+// declare module "dcorejs" {
+//     export = dcorejs;
+// }
