@@ -52,7 +52,6 @@
     "dist"
   ],
   "pre-push": [
-    "dist"
   ],
   "devDependencies": {
     "@types/assertion-error": "^1.0.30",
