@@ -49,17 +49,16 @@
     "url": "https://github.com/peter-rybar/wallet-dct.git"
   },
   "pre-commit": [
-    "build",
     "dist"
   ],
   "pre-push": [
-    "build",
     "dist"
   ],
   "devDependencies": {
     "@types/assertion-error": "^1.0.30",
     "@types/chai": "^3.4.34",
     "@types/mocha": "^2.2.33",
+    "@types/node": "^9.4.2",
     "@types/storejs": "^2.0.1",
     "chai": "^3.5.0",
     "cpx": "^1.5.0",
@@ -88,11 +87,12 @@
     "rollup-plugin-uglify": "^1.0.1",
     "rollup-watch": "^2.5.0",
     "tslint": "^5.8.0",
-    "typescript": "2.3.x",
+    "typescript": "^2.7.1",
     "workbox-cli": "^2.1.1"
   },
   "dependencies": {
     "@types/google.visualization": "0.0.41",
+    "dcorejs": "^2.2.1",
     "incremental-dom": "^0.5.1",
     "storejs": "^1.0.16",
     "workbox-sw": "2.1.2"

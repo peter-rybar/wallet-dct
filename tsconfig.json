@@ -21,7 +21,6 @@
         "outDir": "build"
     },
     "include": [
-        "src/main/**/*.ts",
         "src/demo/**/*.ts",
         "src/test/**/*.ts"
     ],
