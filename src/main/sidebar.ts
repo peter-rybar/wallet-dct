@@ -17,10 +17,10 @@ export class SidebarWidget extends Widget {
     private _user: User;
     private _hash = "";
     private _menu: Menu[] = [
-        { hash: "overview", label: "Overview", icon: "i.fa.fa-users.fa-fw" },
-        { hash: "views", label: "Views", icon: "i.fa.fa-eye.fa-fw" },
-        { hash: "news", label: "News", icon: "i.fa.fa-bell.fa-fw" },
-        { hash: "settings", label: "Settings", icon: "i.fa.fa-cog.fa-fw" },
+        { hash: "account", label: "Account", icon: "i.fa.fa-users.fa-fw" },
+        { hash: "settings", label: "Settings", icon: "i.fa.fa-cog.fa-fw" }
+        // { hash: "views", label: "Views", icon: "i.fa.fa-eye.fa-fw" },
+        // { hash: "news", label: "News", icon: "i.fa.fa-bell.fa-fw" }
     ];
     private _nbsp = "\u00a0 ";
 

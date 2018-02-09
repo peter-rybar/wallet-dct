@@ -4,91 +4,11 @@ import { JsonMLs } from "./prest/jsonml/jsonml";
 import { Router } from "./prest/router";
 import { AppShell } from "./appshell";
 import { SidebarWidget } from "./sidebar";
+import { AccountsWidget, Account } from "./widgets/accounts";
+import { SettingsWidget, Settings } from "./widgets/settings";
 import { ContentWidget } from "./content";
-
 import * as store from "store";
-// store.set("settings", {});
-const settings = store.get("settings");
-console.log("settings", settings);
-
-
 import { DCore } from "./logic/dcore";
-
-const chainId = "17401602b201b3c45a3ad98afc6fb458f91f519bd30d1058adf6f2bed66376bc";
-const dcoreNetworkAddresses = ["wss://stage.decentgo.com:8090"];
-
-const dcore = new DCore()
-    .init(chainId, dcoreNetworkAddresses,
-         state => console.log("dcorejs state:", state));
-
-dcore.chainProperty()
-    .then(res => console.log("chainProperty", JSON.stringify(res, null, 4)))
-    .catch((err: any) => console.error(err));
-
-const accountName = "ue1c1903e2753f3caa2ef4f1456e45139";
-
-dcore.accountByName(accountName)
-    .then(res => console.log("accountByName", JSON.stringify(res, null, 4)))
-    .catch((err: any) => console.error(err));
-
-const accountId = "1.2.134";
-
-dcore.balance(accountId)
-    .then(balance => console.log("balance", balance))
-    .catch((err: any) => console.error(err));
-
-dcore.accountHistory(accountId)
-    .then(res => console.log("accountHistory", JSON.stringify(res, null, 4)))
-    .catch((err: any) => console.error(err));
-
-const privateKey = "aaa";
-dcore.transactionHistory(accountId, [privateKey])
-    .then(res => console.log("transactionHistory", JSON.stringify(res, null, 4)))
-    .catch((err: any) => console.error(err));
-
-
-class HelloWidget extends Widget {
-
-    private _name: string;
-
-    constructor(name: string) {
-        super("HelloWidget");
-        this._name = name;
-    }
-
-    setName(name: string): this {
-        this._name = name;
-        this.update();
-        return this;
-    }
-
-    onMount() {
-        console.log("onMount", this.type, this.id);
-    }
-
-    onUmount() {
-        console.log("onUmount", this.type, this.id);
-    }
-
-    render(): JsonMLs {
-        return [
-            ["p",
-                ["input.w3-input~i",
-                    { type: "text", value: this._name, input: this._onTextInput }
-                ],
-                ["p", "Hello ", ["strong", this._name], " !"]
-            ]
-        ];
-    }
-
-    private _onTextInput = (e: Event) => {
-        const i = e.target as HTMLInputElement;
-        // const i = this.refs["i"] as HTMLInputElement;
-        this._name = i.value;
-        this.update();
-    }
-
-}
 
 swInit();
 
@@ -100,31 +20,106 @@ const app = new AppShell<SidebarWidget, Widget>()
     .setSidebar(sidebar)
     .mount(document.getElementById("app"));
 
-const contents: { [kry: string]: ContentWidget } = {
+if (!store.get("settings")) {
+    const s: Settings = {
+        chainId: "17401602b201b3c45a3ad98afc6fb458f91f519bd30d1058adf6f2bed66376bc",
+        chainAddr: "wss://stage.decentgo.com:8090"
+    };
+    store.set("settings", s);
+}
+const settings = store.get("settings") as Settings;
+// console.log("settings", settings);
+
+if (!store.get("account")) {
+    const a: Account = {
+        name: "",
+        privKey: ""
+    };
+    store.set("account", a);
+}
+const account = store.get("account") as Account;
+// console.log("account", account);
+
+const settingsWidget = new SettingsWidget()
+    .setTitle("Settings")
+    .setSettings(settings)
+    .onSave(s => store.set("settings", s));
+
+const accountsWidget = new AccountsWidget()
+    .setTitle("Account")
+    .setAccount(account)
+    .onSave(a => store.set("account", a));
+
+const contents: { [kry: string]: Widget } = {
     views: new ContentWidget("Views"),
     traffic: new ContentWidget("Traffic"),
     geo: new ContentWidget("Geo")
 };
 
-Router.route("*", (path: string) => {
-    console.log("#*", path);
+Router.route("", () => {
+    console.log("#");
     app.sidebarClose();
-    sidebar.setHash(path);
-    const content = contents[path];
-    if (content) {
-        app.setTitle1(content.title);
-        app.setContent(content);
-    } else {
-        app.setTitle1(path);
-        app.setContent(new HelloWidget(path));
-    }
+    sidebar.setHash("");
+    app.setContent(new ContentWidget("Welcome"));
 });
+Router.route("settings", () => {
+    console.log("#settings");
+    app.sidebarClose();
+    sidebar.setHash("settings");
+    app.setContent(settingsWidget);
+});
+Router.route("account", () => {
+    console.log("#account");
+    app.sidebarClose();
+    sidebar.setHash("account");
+    app.setContent(accountsWidget);
+});
+// Router.route("*", (path: string) => {
+//     console.log("#*", path);
+//     app.sidebarClose();
+//     sidebar.setHash(path);
+//     const content = contents[path];
+//     if (content) {
+//         app.setTitle1(content.title);
+//         app.setContent(content);
+//     } else {
+//         app.setTitle1(path);
+//         app.setContent(new ContentWidget(path));
+//     }
+// });
 Router.start();
-// Router.navigate("overview");
+// Router.navigate("settings");
 
-setTimeout(() => {
-    app.snackbar("Welcome");
-}, 2e3);
+const dcore = new DCore()
+    .init(settings.chainId, [settings.chainAddr],
+         state => {
+             console.log("dcorejs state:", state);
+             app.snackbar(`State: ${state}`);
+             switch (state) {
+                 case "open":
+                    if (account.name) {
+                        dcore.accountByName(account.name)
+                            .then(acc => {
+                                console.log("accountByName", JSON.stringify(acc, null, 4));
+                                dcore.balance(acc.id)
+                                    .then(balance => {
+                                        app.setTitle1("balance " + balance + " DCT");
+                                    })
+                                    .catch((err: any) => {
+                                        console.error(err);
+                                        app.snackbar(`Error: ${err}`);
+                                    });
+                            })
+                            .catch((err: any) => console.error(err));
+                        }
+                    break;
+             }
+         });
+
+
+// setTimeout(() => {
+//     app.snackbar("Welcome");
+// }, 2e3);
 
 // setTimeout(() => {
 //     showNotification("Notif title", {

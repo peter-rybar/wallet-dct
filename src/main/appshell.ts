@@ -73,12 +73,15 @@ export class AppShell<SidebarW extends Widget, ContentW extends Widget> extends 
                 },
                 ["button.w3-bar-item.w3-button.w3-hide-large.w3-hover-none.w3-hover-text-light-grey",
                     {
+                        accesskey: "m",
                         click: this.onClickMenu
                     },
                     ["i.fa.fa-bars"],
                 ],
                 ["span.w3-bar-item",
-                    ["strong~title", this._title],
+                    ["strong~title",
+                        ["a", { href: "#", style: "text-decoration: none;" } , this._title]
+                    ],
                     ["span~title1", this._title1 ? ` - ${this._title1}` : ""],
                 ],
                 ["span.w3-bar-item.w3-right",

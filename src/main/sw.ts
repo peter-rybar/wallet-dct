@@ -1,6 +1,5 @@
 // https://codelabs.developers.google.com/codelabs/workbox-lab/
 
-declare const importScripts: (script: string) => void;
 declare const WorkboxSW: any;
 
 importScripts("lib/workbox-sw.js");
