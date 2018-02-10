@@ -55,6 +55,7 @@
   "devDependencies": {
     "@types/assertion-error": "^1.0.30",
     "@types/chai": "^3.4.34",
+    "@types/google.visualization": "0.0.41",
     "@types/mocha": "^2.2.33",
     "@types/numeral": "0.0.22",
     "@types/storejs": "^2.0.1",
@@ -89,7 +90,6 @@
     "workbox-cli": "^2.1.1"
   },
   "dependencies": {
-    "@types/google.visualization": "0.0.41",
     "dcorejs": "^2.2.1",
     "incremental-dom": "^0.5.1",
     "moment": "^2.20.1",

@@ -19,7 +19,12 @@ export class MainWidget extends Widget {
         return [
             ["h2", "Wallet DCT"],
             ["p",
-                "Web Wallet application (PWA)"
+                "Web/Mobile Wallet application (PWA)"
+            ],
+            ["ul",
+                ["li", ["a", { href: "https://decent.ch/", target: "_blank" }, "DECENT web page"]],
+                ["li", ["a", { href: "https://dcore.decent.ch/", target: "_blank" }, "DCore product page"]],
+                ["li", ["a", { href: "https://en.wikipedia.org/wiki/DECENT_Network", target: "_blank" }, "Wiki - DECENT_Network"]],
             ]
         ];
     }
