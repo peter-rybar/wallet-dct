@@ -88,10 +88,50 @@ export class AppShell<SidebarW extends Widget, ContentW extends Widget> extends 
                     ["a",
                         {
                             href: "https://github.com/peter-rybar/wallet-dct",
-                            title: "github",
+                            title: "Github",
                             target: "_blank"
                         },
                         ["i.fa.fa-github"]
+                    ]
+                ],
+                ["span.w3-bar-item.w3-right", { style: "padding-right: 4px; padding-left: 4px;"},
+                    ["a",
+                        {
+                            href: "http://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fpeter-rybar.github.io%2Fwallet-dct%2F&title=Wallet%20DCT&source=https%3A%2F%2Fpeter-rybar.github.io%2Fwallet-dct%2F",
+                            title: "Share on LinkedIn",
+                            target: "_blank"
+                        },
+                        ["i.fa.fa-linkedin"]
+                    ]
+                ],
+                ["span.w3-bar-item.w3-right", { style: "padding-right: 4px; padding-left: 4px;"},
+                    ["a",
+                        {
+                            href: "https://plus.google.com/share?url=https%3A%2F%2Fpeter-rybar.github.io%2Fwallet-dct%2F",
+                            title: "Share on Google+",
+                            target: "_blank"
+                        },
+                        ["i.fa.fa-google-plus"]
+                    ]
+                ],
+                ["span.w3-bar-item.w3-right", { style: "padding-right: 4px; padding-left: 4px;"},
+                    ["a",
+                        {
+                            href: "https://twitter.com/intent/tweet?source=https%3A%2F%2Fpeter-rybar.github.io%2Fwallet-dct%2F&text=Wallet%20DCT:%20https%3A%2F%2Fpeter-rybar.github.io%2Fwallet-dct%2F",
+                            title: "Tweet",
+                            target: "_blank"
+                        },
+                        ["i.fa.fa-twitter"]
+                    ]
+                ],
+                ["span.w3-bar-item.w3-right", { style: "padding-right: 4px; padding-left: 4px;"},
+                    ["a",
+                        {
+                            href: "https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fpeter-rybar.github.io%2Fwallet-dct%2F&quote=Wallet%20DCT",
+                            title: "Share on Facebook",
+                            target: "_blank"
+                        },
+                        ["i.fa.fa-facebook"]
                     ]
                 ]
             ],
