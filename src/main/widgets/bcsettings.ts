@@ -1,20 +1,20 @@
 import { Widget } from "../prest/jsonml/jsonml-widget";
 import { JsonMLs } from "../prest/jsonml/jsonml";
 
-export interface Settings {
+export interface BcSettings {
     chainId: string;
     chainAddr: string;
 }
 
-export class SettingsWidget extends Widget {
+export class BcSettingsWidget extends Widget {
 
     private _title: string;
-    private _settings: Settings;
+    private _settings: BcSettings;
 
-    private _onSave: (settings: Settings) => void;
+    private _onSave: (settings: BcSettings) => void;
 
     constructor() {
-        super("SettingsWidget");
+        super("BcSettingsWidget");
         this._settings = {
             chainId: "",
             chainAddr: "",
@@ -31,17 +31,17 @@ export class SettingsWidget extends Widget {
         return this;
     }
 
-    getSettings(): Settings {
+    getSettings(): BcSettings {
         return this._settings;
     }
 
-    setSettings(settings: Settings): this {
+    setSettings(settings: BcSettings): this {
         this._settings = settings;
         this.update();
         return this;
     }
 
-    onSave(onSave: (settings: Settings) => void): this {
+    onSave(onSave: (settings: BcSettings) => void): this {
         this._onSave = onSave;
         return this;
     }

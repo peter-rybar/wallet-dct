@@ -31,7 +31,20 @@ export class DCore {
         return dcorejs.account().getAccountById(accountId);
     }
 
-    balance(accountId: string): Promise<number> {
+    balanceByName(accountName: string): Promise<number> {
+        return new Promise<number>((resolve, reject) => {
+            this.accountByName(accountName)
+                .then(acc => {
+                    // console.log("accountByName", JSON.stringify(acc, null, 4));
+                    this.balanceById(acc.id)
+                        .then(balance => resolve(balance))
+                        .catch((err: any) => reject(err));
+                })
+                .catch((err: any) => reject(err));
+        });
+    }
+
+    balanceById(accountId: string): Promise<number> {
         return dcorejs.account().getBalance(accountId);
     }
 

@@ -2,15 +2,15 @@ import { Widget } from "../prest/jsonml/jsonml-widget";
 import { JsonMLs } from "../prest/jsonml/jsonml";
 import { Signal } from "../prest/signal";
 
-export class PaymentsWidget extends Widget {
+export class HistoryWidget extends Widget {
 
     private _title: string = "Form";
-    private _transactions: number[] = [0, 1, 2];
+    private _transactions: number[] = [];
 
     readonly sigData = new Signal<FormData>();
 
     constructor() {
-        super("PaymentsWidget");
+        super("HistoryWidget");
     }
 
     getTitle(): string {

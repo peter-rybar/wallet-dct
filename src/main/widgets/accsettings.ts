@@ -1,20 +1,20 @@
 import { Widget } from "../prest/jsonml/jsonml-widget";
 import { JsonMLs } from "../prest/jsonml/jsonml";
 
-export interface Account {
+export interface AccSettings {
     name: string;
     privKey: string;
 }
 
-export class AccountsWidget extends Widget {
+export class AccSettingsWidget extends Widget {
 
     private _title: string;
-    private _account: Account;
+    private _account: AccSettings;
 
-    private _onSave: (account: Account) => void;
+    private _onSave: (account: AccSettings) => void;
 
     constructor() {
-        super("AccountsWidget");
+        super("AccSettingsWidget");
         this._account = {
             name: "",
             privKey: ""
@@ -31,17 +31,17 @@ export class AccountsWidget extends Widget {
         return this;
     }
 
-    getAccount(): Account {
+    getAccount(): AccSettings {
         return this._account;
     }
 
-    setAccount(account: Account): this {
+    setAccount(account: AccSettings): this {
         this._account = account;
         this.update();
         return this;
     }
 
-    onSave(onSave: (a: Account) => void): this {
+    onSave(onSave: (a: AccSettings) => void): this {
         this._onSave = onSave;
         return this;
     }

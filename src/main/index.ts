@@ -4,11 +4,16 @@ import { JsonMLs } from "./prest/jsonml/jsonml";
 import { Router } from "./prest/router";
 import { AppShell } from "./appshell";
 import { SidebarWidget } from "./sidebar";
-import { AccountsWidget, Account } from "./widgets/accounts";
-import { SettingsWidget, Settings } from "./widgets/settings";
-import { ContentWidget } from "./content";
-import * as store from "store";
+import { MainWidget } from "./widgets/main";
+import { HistoryWidget } from "./widgets/history";
+import { TransferWidget } from "./widgets/transfer";
+import { AccSettingsWidget, AccSettings } from "./widgets/accsettings";
+import { BcSettingsWidget, BcSettings } from "./widgets/bcsettings";
 import { DCore } from "./logic/dcore";
+// import * as store from "store";
+import { defineLocale } from "moment";
+
+declare const store: any;
 
 swInit();
 
@@ -20,99 +25,81 @@ const app = new AppShell<SidebarWidget, Widget>()
     .setSidebar(sidebar)
     .mount(document.getElementById("app"));
 
-if (!store.get("settings")) {
-    const s: Settings = {
+if (!store.get("blockchain")) {
+    const bs: BcSettings = {
         chainId: "17401602b201b3c45a3ad98afc6fb458f91f519bd30d1058adf6f2bed66376bc",
         chainAddr: "wss://stage.decentgo.com:8090"
     };
-    store.set("settings", s);
+    store.set("blockchain", bs);
 }
-const settings = store.get("settings") as Settings;
-// console.log("settings", settings);
+const settings = store.get("blockchain") as BcSettings;
+// console.log("blockchain", settings);
 
 if (!store.get("account")) {
-    const a: Account = {
+    const as: AccSettings = {
         name: "",
         privKey: ""
     };
-    store.set("account", a);
+    store.set("account", as);
 }
-const account = store.get("account") as Account;
+const account = store.get("account") as AccSettings;
 // console.log("account", account);
 
-const settingsWidget = new SettingsWidget()
-    .setTitle("Settings")
-    .setSettings(settings)
-    .onSave(s => store.set("settings", s));
+const mainWidget = new MainWidget();
 
-const accountsWidget = new AccountsWidget()
+const historyWidget = new HistoryWidget()
+    .setTitle("History");
+
+const transferWidget = new TransferWidget()
+    .setTitle("Transfer");
+
+const bcSettingsWidget = new BcSettingsWidget()
+    .setTitle("Blockchain")
+    .setSettings(settings)
+    .onSave(s => store.set("blockchain", s));
+
+const accSettingsWidget = new AccSettingsWidget()
     .setTitle("Account")
     .setAccount(account)
     .onSave(a => store.set("account", a));
 
 const contents: { [kry: string]: Widget } = {
-    views: new ContentWidget("Views"),
-    traffic: new ContentWidget("Traffic"),
-    geo: new ContentWidget("Geo")
+    "history": historyWidget,
+    "transfer": transferWidget,
+    "settings-bc": bcSettingsWidget,
+    "settings-acc": accSettingsWidget
 };
 
-Router.route("", () => {
-    console.log("#");
+Router.route("*", (path: string) => {
+    console.log("#*", path);
     app.sidebarClose();
-    sidebar.setHash("");
-    app.setContent(new ContentWidget("Welcome"));
+    sidebar.setHash(path);
+    const content = contents[path];
+    if (content) {
+        app.setContent(content);
+    } else {
+        if (path) {
+            Router.navigate("");
+        } else {
+            app.setContent(mainWidget);
+        }
+    }
 });
-Router.route("settings", () => {
-    console.log("#settings");
-    app.sidebarClose();
-    sidebar.setHash("settings");
-    app.setContent(settingsWidget);
-});
-Router.route("account", () => {
-    console.log("#account");
-    app.sidebarClose();
-    sidebar.setHash("account");
-    app.setContent(accountsWidget);
-});
-// Router.route("*", (path: string) => {
-//     console.log("#*", path);
-//     app.sidebarClose();
-//     sidebar.setHash(path);
-//     const content = contents[path];
-//     if (content) {
-//         app.setTitle1(content.title);
-//         app.setContent(content);
-//     } else {
-//         app.setTitle1(path);
-//         app.setContent(new ContentWidget(path));
-//     }
-// });
 Router.start();
-// Router.navigate("settings");
+if (!store.get("account")) {
+    Router.navigate("settings-acc");
+}
 
 const dcore = new DCore()
     .init(settings.chainId, [settings.chainAddr],
          state => {
              console.log("dcorejs state:", state);
-             app.snackbar(`State: ${state}`);
              switch (state) {
                  case "open":
-                    if (account.name) {
-                        dcore.accountByName(account.name)
-                            .then(acc => {
-                                console.log("accountByName", JSON.stringify(acc, null, 4));
-                                dcore.balance(acc.id)
-                                    .then(balance => {
-                                        app.setTitle1("balance " + balance + " DCT");
-                                    })
-                                    .catch((err: any) => {
-                                        console.error(err);
-                                        app.snackbar(`Error: ${err}`);
-                                    });
-                            })
-                            .catch((err: any) => console.error(err));
-                        }
+                    app.snackbar("Blockchain connected");
                     break;
+                default:
+                    app.snackbar(`State: ${state}`);
              }
          });
 

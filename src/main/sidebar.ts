@@ -14,14 +14,20 @@ interface User {
 
 export class SidebarWidget extends Widget {
 
-    private _user: User;
     private _hash = "";
-    private _menu: Menu[] = [
-        { hash: "account", label: "Account", icon: "i.fa.fa-users.fa-fw" },
-        { hash: "settings", label: "Settings", icon: "i.fa.fa-cog.fa-fw" }
-        // { hash: "views", label: "Views", icon: "i.fa.fa-eye.fa-fw" },
-        // { hash: "news", label: "News", icon: "i.fa.fa-bell.fa-fw" }
+    private _user: User;
+    private _account: Menu[] = [
+        // { hash: "account", label: "Account", icon: "i.fa.fa-users.fa-fw" },
+        { hash: "history", label: "History", icon: "i.fa.fa-history.fa-fw" },
+        { hash: "transfer", label: "Transfer", icon: "i.fa.fa-exchange.fa-fw" }
     ];
+    private _settings: Menu[] = [
+        { hash: "settings-acc", label: "Account", icon: "i.fa.fa-cog.fa-fw" },
+        { hash: "settings-bc", label: "Blockchain", icon: "i.fa.fa-cogs.fa-fw" }
+    ];
+    // private _info: Menu[] = [
+    //     { hash: "news", label: "News", icon: "i.fa.fa-bell.fa-fw" }
+    // ];
     private _nbsp = "\u00a0 ";
 
     constructor() {
@@ -51,40 +57,40 @@ export class SidebarWidget extends Widget {
     render(): JsonMLs {
         return [
             ["nav",
-                ["br"],
-                ["div.w3-container.w3-row",
-                    ["div.w3-col.s4",
-                        ["img.w3-circle.w3-margin-right",
-                            {
-                                src:  this._user.avatar || "https://www.w3schools.com/w3images/avatar2.png",
-                                style: "width:46px"
-                            }
-                        ]
-                    ],
-                    ["div.w3-col.s8.w3-bar",
-                        ["span",
-                            ["a", { href: "#", style: "text-decoration: none;" }, "Welcome"],
-                            this._user.name ? ", " : " ",
-                            ["strong~name", this._user.name]
-                        ],
-                        ["br"],
-                        ["a.w3-bar-item.w3-button", { href: "#messages", title: "Messages" },
-                            ["i.fa.fa-envelope"]
-                        ],
-                        ["a.w3-bar-item.w3-button", { href: "#profile", title: "Profile" },
-                            ["i.fa.fa-user"]
-                        ],
-                        ["a.w3-bar-item.w3-button", { href: "#settings", title: "Settings" },
-                            ["i.fa.fa-cog"]
-                        ],
-                    ],
-                ],
-                ["hr"],
+                // ["br"],
+                // ["div.w3-container.w3-row",
+                //     ["div.w3-col.s4",
+                //         ["img.w3-circle.w3-margin-right",
+                //             {
+                //                 src:  this._user.avatar || "https://www.w3schools.com/w3images/avatar2.png",
+                //                 style: "width:46px"
+                //             }
+                //         ]
+                //     ],
+                //     ["div.w3-col.s8.w3-bar",
+                //         ["span",
+                //             ["a", { href: "#", style: "text-decoration: none;" }, "Welcome"],
+                //             this._user.name ? ", " : " ",
+                //             ["strong~name", this._user.name]
+                //         ],
+                //         ["br"],
+                //         ["a.w3-bar-item.w3-button", { href: "#messages", title: "Messages" },
+                //             ["i.fa.fa-envelope"]
+                //         ],
+                //         ["a.w3-bar-item.w3-button", { href: "#profile", title: "Profile" },
+                //             ["i.fa.fa-user"]
+                //         ],
+                //         ["a.w3-bar-item.w3-button", { href: "#settings", title: "Settings" },
+                //             ["i.fa.fa-cog"]
+                //         ],
+                //     ],
+                // ],
+                // ["hr"],
                 ["div.w3-container",
-                    ["h5", "Menu"],
+                    ["h5", "Account"],
                 ],
                 ["div.w3-bar-block",
-                    ...this._menu.map(m => {
+                    ...this._account.map(m => {
                         return (
                             ["a.w3-bar-item.w3-button.w3-padding",
                                 {
@@ -94,9 +100,41 @@ export class SidebarWidget extends Widget {
                                 [m.icon], this._nbsp, m.label
                             ]);
                     }),
-                    ["br"],
-                    ["br"]
-                ]
+                ],
+                ["hr"],
+                ["div.w3-container",
+                    ["h5", "Settings"],
+                ],
+                ["div.w3-bar-block",
+                    ...this._settings.map(m => {
+                        return (
+                            ["a.w3-bar-item.w3-button.w3-padding",
+                                {
+                                    href: `#${m.hash}`,
+                                    classes: m.hash === this._hash ? ["w3-blue"] : []
+                                },
+                                [m.icon], this._nbsp, m.label
+                            ]);
+                    }),
+                ],
+                // ["hr"],
+                // ["div.w3-container",
+                //     ["h5", "Info"],
+                // ],
+                // ["div.w3-bar-block",
+                //     ...this._info.map(m => {
+                //         return (
+                //             ["a.w3-bar-item.w3-button.w3-padding",
+                //                 {
+                //                     href: `#${m.hash}`,
+                //                     classes: m.hash === this._hash ? ["w3-blue"] : []
+                //                 },
+                //                 [m.icon], this._nbsp, m.label
+                //             ]);
+                //     }),
+                // ],
+                ["br"],
+                ["br"]
             ]
         ];
     }
