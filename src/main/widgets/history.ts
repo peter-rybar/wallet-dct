@@ -1,11 +1,12 @@
 import { Widget } from "../prest/jsonml/jsonml-widget";
 import { JsonMLs } from "../prest/jsonml/jsonml";
 import { Signal } from "../prest/signal";
+import { DCore } from "../logic/dcore";
 
 export class HistoryWidget extends Widget {
 
     private _title: string = "Form";
-    private _transactions: number[] = [];
+    private _transactions: number[] = [1, 2, 3, 4, 5];
 
     readonly sigData = new Signal<FormData>();
 
@@ -36,16 +37,21 @@ export class HistoryWidget extends Widget {
             ["h2", this._title],
             ...this._transactions.map(t => {
                 return (
-                    ["ul.w3-ul",
-                        ["li.w3-bar",
-                            ["span.w3-bar-item.w3-button.w3-xlarge.w3-right", "&times;"],
-                            ["div.w3-bar-item w3-circle", new Date()],
-                            ["div.w3-bar-item",
-                                ["span.w3-large", "Mike"],
-                                ["br"],
-                                ["span", "Web Designer"]
+                    ["div.w3-card-12",
+                        ["header.w3-container",
+                            ["h4",
+                                ["b", "5 DCT"],
+                                ["span", " paid to "],
+                                ["b", "u76f283e699e6b25cd6750a5532fee3fa"]
                             ]
-                        ]
+                        ],
+                        ["div.w3-container",
+                            ["p",
+                                ["span", "Transaction fee "],
+                                ["b", "0.005 DCT"]],
+                            ["p", new Date()]
+                        ],
+                        ["hr"]
                     ]);
             })
         ];
