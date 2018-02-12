@@ -1,7 +1,6 @@
 import { Widget } from "../prest/jsonml/jsonml-widget";
 import { JsonMLs } from "../prest/jsonml/jsonml";
 import { Signal } from "../prest/signal";
-import { DCore } from "../logic/dcore";
 
 export class HistoryWidget extends Widget {
 
