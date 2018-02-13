@@ -41,7 +41,43 @@ export class HistoryWidget extends Widget {
                     }
                 ]
             ],
-            ["ul.w3-ul w3-card-4.w3-white.w3-hoverable",
+            ["ul.w3-ul.w3-card-4.w3-white.w3-hoverable",
+                ["li.w3-bar",
+                    ["span.w3-bar-item.w3-large.w3-right",
+                        "2.53 DCT",
+                        ["br"],
+                        ["span.w3-small", "0.05 DCT"]
+                    ],
+                    ["div.w3-bar-item",
+                        ["span.w3-large", "Mike"],
+                        ["br"],
+                        ["span", "Web Designer"]
+                    ]
+                ],
+                ["li.w3-bar",
+                    ["span.w3-bar-item.w3-large.w3-right",
+                        "2.53 DCT",
+                        ["br"],
+                        ["span.w3-small", "0.05 DCT"]
+                    ],
+                    ["div.w3-bar-item",
+                        ["span.w3-large", "Mike"],
+                        ["br"],
+                        ["span", "Web Designer"]
+                    ]
+                ]
+            ],
+            ["br"],
+            ["div.w3-bar.w3-center",
+                ["a.w3-button.w3-xlarge", { href: "#" }, "«"],
+                ["a.w3-button", { href: "#" }, "1"],
+                ["a.w3-button.w3-border.w3-border-blue", { href: "#" }, "2"],
+                ["a.w3-button", { href: "#" }, "3"],
+                ["a.w3-button", { href: "#" }, "4"],
+                ["a.w3-button.w3-xlarge", { href: "#" }, "»"]
+            ],
+            ["br"],
+            ["ul.w3-ul.w3-white.w3-hoverable",
                 ["li.w3-bar",
                     ["span.w3-bar-item.w3-large.w3-right",
                         "2.53 DCT",
@@ -98,16 +134,40 @@ export class HistoryWidget extends Widget {
                     ["th", { style: "width:40%;" }, "Amount"]
                 ],
                 ["tr",
-                    ["td", { style: "width:60%;" }, "Alfreds Futterkiste"],
-                    ["td", { style: "width:40%;" }, ["span.w3-large", "2.53"], ["span.w3-small", " DCT"]]
+                    ["td", { style: "width:60%;" },
+                        ["span.w3-large", "Mike"],
+                        ["br"],
+                        ["span", "Web Designer"]
+                    ],
+                    ["td", { style: "width:40%;" },
+                        "2.53 DCT",
+                        ["br"],
+                        ["span.w3-small", "0.05 DCT"]
+                    ]
                 ],
                 ["tr",
-                    ["td", { style: "width:60%;" }, "Alfreds Futterkiste"],
-                    ["td", { style: "width:40%;" }, ["span.w3-large", "2.53"], ["span.w3-small", " DCT"]]
+                    ["td", { style: "width:60%;" },
+                        ["span.w3-large", "Mike"],
+                        ["br"],
+                        ["span", "Web Designer"]
+                    ],
+                    ["td", { style: "width:40%;" },
+                        "2.53 DCT",
+                        ["br"],
+                        ["span.w3-small", "0.05 DCT"]
+                    ]
                 ],
                 ["tr",
-                    ["td", { style: "width:60%;" }, "Alfreds Futterkiste"],
-                    ["td", { style: "width:40%;" }, ["span.w3-large", "2.53"], ["span.w3-small", " DCT"]]
+                    ["td", { style: "width:60%;" },
+                        ["span.w3-large", "Mike"],
+                        ["br"],
+                        ["span", "Web Designer"]
+                    ],
+                    ["td", { style: "width:40%;" },
+                        "2.53 DCT",
+                        ["br"],
+                        ["span.w3-small", "0.05 DCT"]
+                    ]
                 ]
             ],
             ["br"],
