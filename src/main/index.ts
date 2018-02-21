@@ -1,7 +1,6 @@
 import { swInit } from "./sw-lib";
 import { Widget } from "./prest/jsonml/jsonml-widget";
 import { JsonMLs } from "./prest/jsonml/jsonml";
-import { Router } from "./prest/router";
 import { AppShell } from "./appshell";
 import { SidebarWidget } from "./sidebar";
 import { MainWidget } from "./widgets/main";
@@ -10,6 +9,7 @@ import { TransferWidget } from "./widgets/transfer";
 import { AccSettingsWidget, AccSettings } from "./widgets/accsettings";
 import { BcSettingsWidget, BcSettings } from "./widgets/bcsettings";
 import { DCore } from "./logic/dcore";
+import { Hash } from "./prest/hash";
 // import * as store from "store";
 import { defineLocale } from "moment";
 
@@ -70,8 +70,7 @@ const contents: { [kry: string]: Widget } = {
     "settings-acc": accSettingsWidget
 };
 
-Router.route("*", (path: string) => {
-    console.log("#*", path);
+const route = path => {
     app.sidebarClose();
     sidebar.setHash(path);
     const content = contents[path];
@@ -79,15 +78,20 @@ Router.route("*", (path: string) => {
         app.setContent(content);
     } else {
         if (path) {
-            Router.navigate("");
+            hash.write("");
         } else {
             app.setContent(mainWidget);
         }
     }
-});
-Router.start();
+};
+
+const hash = new Hash<string>()
+    .setEncoder(data => data)
+    .setDecoder(str => str)
+    .onChange(route);
+route(hash.read());
 if (!store.get("account")) {
-    Router.navigate("settings-acc");
+    hash.write("settings-acc");
 }
 
 const dcore = new DCore()
